@@ -1,13 +1,252 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-    <title>Chromebook Only Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>無教主義連邦帝国</title>
+    <!-- 日本語フォントとアイコンの読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        body { background: black; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
-        h1 { font-size: 3rem; background: linear-gradient(to right, #00c6ff, #0072ff); -webkit-background-clip: text; color: transparent; }
+        /* --- 基本設定 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1f25 0%, #3a414a 100%); /* 画像のようなダークなグラデーション */
+            color: white;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- ヘッダーエリア --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* 検索バー */
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #666;
+            padding: 8px 15px;
+            width: 250px;
+            background: rgba(0,0,0,0.2);
+        }
+        .search-box i { color: #ccc; margin-right: 10px; }
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            width: 100%;
+        }
+
+        /* ナビゲーション（右上のメニュー） */
+        .nav-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+        }
+        .user-login {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        .user-login i { font-size: 24px; color: #76a9d8; } /* アイコンの水色 */
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+        .nav-links a { color: white; text-decoration: none; opacity: 0.8; }
+        .nav-links a:hover { opacity: 1; }
+
+        /* --- メインコンテンツ --- */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        /* ロゴ（黒い四角と太陽のマーク） */
+        .logo-box {
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 仮のロゴマーク（白い放射線） */
+        .logo-sun {
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, white 20%, transparent 20%),
+                        conic-gradient(transparent 10%, white 15%, transparent 20%, white 25%, transparent 30%, white 35%, transparent 40%, white 45%, transparent 50%, white 55%, transparent 60%, white 65%, transparent 70%, white 75%, transparent 80%, white 85%, transparent 90%, white 95%, transparent 100%);
+            border-radius: 50%;
+        }
+
+        /* タイトル */
+        h1 {
+            font-size: 4rem; /* 巨大文字 */
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .subtitle {
+            font-size: 2.5rem;
+            font-weight: normal;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* 準備中メッセージ */
+        .status-text {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        /* プログレスバー（進捗バー） */
+        .progress-wrapper {
+            width: 300px;
+            margin-bottom: 40px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ccc; /* グレーの背景 */
+            margin-bottom: 5px;
+        }
+        .progress-fill {
+            width: 60%; /* 進捗率 */
+            height: 100%;
+            background: #8ab4f8; /* 水色 */
+        }
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        /* 入国ボタン */
+        .enter-btn {
+            background-color: #8ab4f8; /* 水色 */
+            color: white;
+            border: none;
+            padding: 12px 60px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .enter-btn:hover { opacity: 0.9; }
+
+        /* --- チャットアイコン（右下） --- */
+        .chat-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #8ab4f8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .chat-icon i { color: white; font-size: 24px; }
+
+        /* --- 左端のタブ（装飾） --- */
+        .side-tab {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            width: 20px;
+            height: 40px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 0 5px 5px 0;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Cloud Native Development</h1>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="nav-area">
+            <div>
+                <div class="user-login">
+                    <i class="fas fa-user-circle"></i>
+                    <span>ログイン</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#">ホーム</a></li>
+                    <li><a href="#">イベント</a></li>
+                    <li><a href="#">More</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+        <!-- ロゴ（画像があればimgタグに差し替えてください） -->
+        <div class="logo-box">
+            <div class="logo-sun"></div>
+        </div>
+
+        <h1>無教主義連邦帝国</h1>
+        <div class="subtitle">mukyo-Federation Empire</div>
+
+        <div class="status-text">現在準備中です。完成までもうしばらくお待ちください。</div>
+
+        <!-- プログレスバー -->
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-labels">
+                <span>0%</span>
+                <span>100%</span>
+            </div>
+        </div>
+
+        <!-- ボタン -->
+        <a href="#" class="enter-btn">入国する</a>
+    </div>
+
+    <!-- 装飾パーツ -->
+    <div class="side-tab"></div>
+    <div class="chat-icon">
+        <i class="fas fa-comment-alt"></i>
+    </div>
+
 </body>
 </html>
